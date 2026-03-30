@@ -1,7 +1,4 @@
-if (typeof self !== 'undefined') {
-  (self as any).window = self;
-}
-
+import './polyfill';
 import { generateMembershipProof, ZKProofInput } from '../lib/zkProof';
 
 self.onmessage = async (event: MessageEvent) => {
