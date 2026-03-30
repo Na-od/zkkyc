@@ -1,3 +1,7 @@
+if (typeof self !== 'undefined') {
+  (self as any).window = self;
+}
+
 import { generateMembershipProof, ZKProofInput } from '../lib/zkProof';
 
 self.onmessage = async (event: MessageEvent) => {
