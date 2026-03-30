@@ -34,11 +34,17 @@ export async function POST(req: NextRequest) {
     if (isRealSMS) {
       console.log('Attempting to send real SMS via Africa\'s Talking...');
       try {
-        await sms.send({
+        const smsOptions: any = {
           to: [phone],
-          message: `Your zkKYC Credential OTP is: ${otp}`,
-          from: process.env.AT_SENDER_ID || 'zkKYC'
-        });
+          message: `Your zkKYC Credential OTP is: ${otp}`
+        };
+        
+        // Do not include 'from' in sandbox unless explicitly registered, otherwise it drops the SMS
+        if (process.env.AT_SENDER_ID && process.env.AT_SENDER_ID !== 'zkKYC') {
+          smsOptions.from = process.env.AT_SENDER_ID;
+        }
+
+        await sms.send(smsOptions);
         console.log(`[SMS] Sent real OTP to ${phone}`);
       } catch (smsErr: any) {
         console.error('⚠️ Africa\'s Talking AUTH/API Error:', smsErr.message);
